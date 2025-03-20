@@ -1,4 +1,4 @@
-# Relic Tracker
+# Relic Tracker (Nobody's Adventure Chop-Chop)
 
 A Progressive Web App (PWA) designed to help players track their relic shards and chests. Keep track of your collection, manage your chests, and monitor your progress towards completing relics.
 
