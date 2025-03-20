@@ -259,23 +259,26 @@ body {
     padding: 1.5rem;
 }
 
-.chest-grid, .relic-grid {
+.chest-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 1rem;
+    padding: 1rem;
 }
 
-.chest-item, .relic-item {
-    background: var(--surface-alt);
-    border-radius: var(--radius-lg);
-    padding: 1.25rem;
-    text-align: center;
+.chest-item {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
-.chest-item:hover, .relic-item:hover {
+.chest-item:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
     border-color: var(--primary-light);
@@ -377,15 +380,13 @@ body {
 
     /* Chest Grid Improvements */
     .chest-grid {
-        display: grid;
         grid-template-columns: repeat(3, 1fr) !important;
         gap: 0.8rem;
-        width: 100%;
+        padding: 0.8rem;
     }
 
     .chest-item {
         padding: 0.8rem;
-        width: 100%;
     }
 
     .chest-item h3 {
@@ -412,6 +413,7 @@ body {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        max-width: 100%;
     }
 
     /* Modal Improvements */
@@ -559,6 +561,7 @@ body {
     .chest-grid {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 0.6rem;
+        padding: 0.6rem;
     }
 
     .chest-item h3 {
