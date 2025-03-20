@@ -92,6 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.editShardsBtn.addEventListener('click', showEditShards);
     window.manageChestsBtn.addEventListener('click', showManageChests);
     window.manageUnlockedBtn.addEventListener('click', showManageUnlocked);
+
+    // Initialize unlocked relics tracker
+    updateUnlockedRelicsTracker();
 });
 
 // Utility Functions
@@ -463,21 +466,45 @@ function showProgress() {
     
     progressList.innerHTML = '';
     
-    // Count total and completed relics
-    let totalRelics = 0;
-    let completedRelics = 0;
-    
-    // Get all unique relics from chests
+    // Get all unique relics from chests, shards, and unlocked relics
     const allRelics = new Set();
+    
+    // Add relics from chests
     relicData.availableChests.forEach(chest => {
         chest.relics.forEach(relic => allRelics.add(relic));
     });
     
+    // Add relics from existing shards
+    Object.keys(relicData.shards).forEach(relic => allRelics.add(relic));
+    
+    // Add unlocked relics
+    Object.keys(relicData.unlockedRelics).forEach(relic => allRelics.add(relic));
+    
     // Calculate progress for each relic
+    let totalRelics = 0;
+    let completedRelics = 0;
+    
     allRelics.forEach(relic => {
+        const isUnlocked = relicData.unlockedRelics[relic] || false;
         const currentShards = relicData.shards[relic] || 0;
-        const requiredShards = 10; // Assuming 10 shards are needed for each relic
-        const progress = Math.min((currentShards / requiredShards) * 100, 100);
+        const requiredShards = 50; // Changed to 50 shards required for each relic
+        
+        // Count potential shards from chests
+        let potentialShards = 0;
+        relicData.availableChests.forEach(chest => {
+            chest.relics.forEach(chestRelic => {
+                if (chestRelic === relic) {
+                    potentialShards++;
+                }
+            });
+        });
+        
+        // Total shards is current shards plus potential shards from chests
+        const totalShards = currentShards + potentialShards;
+        
+        // If relic is unlocked, it's 100% complete
+        // Otherwise, calculate progress based on total shards
+        const progress = isUnlocked ? 100 : Math.min((totalShards / requiredShards) * 100, 100);
         
         if (progress === 100) {
             completedRelics++;
@@ -488,8 +515,8 @@ function showProgress() {
         div.className = 'progress-item';
         div.innerHTML = `
             <div class="progress-item-header">
-                <span class="progress-item-name">${relic}</span>
-                <span class="progress-item-count">${currentShards}/${requiredShards} shards</span>
+                <span class="progress-item-name">${relic}${isUnlocked ? ' (Unlocked)' : ''}</span>
+                <span class="progress-item-count">${isUnlocked ? 'Completed' : `${totalShards}/${requiredShards} shards (${currentShards} current + ${potentialShards} in chests)`}</span>
             </div>
             <div class="progress-item-bar">
                 <div class="progress-item-fill" style="width: ${progress}%"></div>
@@ -550,6 +577,7 @@ function addUnlockedRelic() {
             relicData.unlockedRelics[relic] = true;
             saveData();
             closeModal();
+            updateUnlockedRelicsTracker();
         });
         relicList.appendChild(div);
     });
@@ -561,6 +589,7 @@ function removeUnlockedRelic(relic) {
         delete relicData.unlockedRelics[relic];
         saveData();
         showManageUnlocked();
+        updateUnlockedRelicsTracker();
     }
 }
 
@@ -613,7 +642,36 @@ function checkForUnlocks() {
             });
             saveData();
             showProgress();
+            updateUnlockedRelicsTracker();
             showNotification('Relics marked as unlocked!');
         }
     }
+}
+
+// Add this function to update the unlocked relics tracker
+function updateUnlockedRelicsTracker() {
+    const unlockedList = document.getElementById('unlockedList');
+    const unlockedCount = document.getElementById('unlockedCount');
+    
+    // Update count
+    const count = Object.keys(relicData.unlockedRelics).length;
+    unlockedCount.textContent = count;
+    
+    // Update list
+    unlockedList.innerHTML = '';
+    
+    if (count === 0) {
+        unlockedList.innerHTML = '<div class="unlocked-relic-item">No relics unlocked yet</div>';
+        return;
+    }
+    
+    Object.keys(relicData.unlockedRelics).sort().forEach(relic => {
+        const div = document.createElement('div');
+        div.className = 'unlocked-relic-item';
+        div.innerHTML = `
+            <span class="material-icons">check_circle</span>
+            ${relic}
+        `;
+        unlockedList.appendChild(div);
+    });
 } 

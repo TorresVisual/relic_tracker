@@ -39,18 +39,6 @@
                     <h1>Relic Tracker</h1>
                     <p class="subtitle">Track your progress and manage relics</p>
                 </div>
-                <div class="header-right">
-                    <div class="stats-container">
-                        <div class="stat-item">
-                            <span class="stat-value" id="totalRelics">0</span>
-                            <span class="stat-label">Total Relics</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value" id="completedRelics">0</span>
-                            <span class="stat-label">Completed</span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </header>
 
@@ -138,6 +126,17 @@
                     <div class="modal-body">
                         <div id="relicList" class="relic-grid"></div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Unlocked Relics Tracker -->
+            <div class="unlocked-relics">
+                <div class="unlocked-relics-header">
+                    <h3>Unlocked Relics</h3>
+                    <span class="unlocked-relics-count" id="unlockedCount">0</span>
+                </div>
+                <div class="unlocked-relics-list" id="unlockedList">
+                    <!-- Unlocked relics will be populated here -->
                 </div>
             </div>
         </main>
