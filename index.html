@@ -77,34 +77,40 @@
                 </div>
             </div>
 
+            <!-- Progress Display -->
             <div id="progressDisplay" class="progress-panel hidden">
                 <div class="panel-header">
                     <h2>Relic Progress</h2>
-                    <button class="close-btn" onclick="hideProgress()">×</button>
+                    <button class="close-btn" onclick="hideProgress()">
+                        <span class="material-icons">close</span>
+                    </button>
                 </div>
                 <div class="panel-content">
                     <div class="progress-summary">
                         <div class="progress-stats">
-                            <div class="stat-item">
-                                <span class="stat-value" id="totalRelicsProgress">0</span>
-                                <span class="stat-label">Total Relics</span>
+                            <div class="progress-stat">
+                                <div class="progress-stat-value" id="totalRelicsProgress">0</div>
+                                <div class="progress-stat-label">Total Relics</div>
                             </div>
-                            <div class="stat-item">
-                                <span class="stat-value" id="completedRelicsProgress">0</span>
-                                <span class="stat-label">Completed</span>
+                            <div class="progress-stat">
+                                <div class="progress-stat-value" id="completedRelicsProgress">0</div>
+                                <div class="progress-stat-label">Completed</div>
                             </div>
                         </div>
                         <div class="overall-progress">
                             <div class="progress-bar">
                                 <div class="progress-fill" id="overallProgressFill"></div>
                             </div>
-                            <span class="progress-text" id="overallProgressText">0% Complete</span>
+                            <div class="progress-text" id="overallProgressText">0% Complete</div>
                         </div>
                     </div>
-                    <div id="progressList" class="progress-list"></div>
+                    <div id="progressList" class="progress-list">
+                        <!-- Progress items will be populated here -->
+                    </div>
                 </div>
             </div>
 
+            <!-- Chest Selection Modal -->
             <div id="chestModal" class="modal hidden">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -117,6 +123,7 @@
                 </div>
             </div>
 
+            <!-- Relic Selection Modal -->
             <div id="relicModal" class="modal hidden">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -128,19 +135,9 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Unlocked Relics Tracker -->
-            <div class="unlocked-relics">
-                <div class="unlocked-relics-header">
-                    <h3>Unlocked Relics</h3>
-                    <span class="unlocked-relics-count" id="unlockedCount">0</span>
-                </div>
-                <div class="unlocked-relics-list" id="unlockedList">
-                    <!-- Unlocked relics will be populated here -->
-                </div>
-            </div>
         </main>
     </div>
+
     <script src="app.js"></script>
 </body>
 </html> 
