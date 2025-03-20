@@ -81,16 +81,16 @@ h1 {
 
 .modal {
     position: fixed;
-    z-index: 1000;
-    left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
-    -webkit-tap-highlight-color: transparent;
+    z-index: 1000;
+    padding: 20px;
 }
 
 .modal.hidden {
@@ -99,14 +99,14 @@ h1 {
 
 .modal-content {
     background-color: white;
-    padding: 30px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 800px;
+    padding: 25px;
+    border-radius: 16px;
     position: relative;
+    width: 100%;
+    max-width: 600px;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Close button for modal */
@@ -370,10 +370,12 @@ h1 {
         font-size: 1.8rem;
     }
 
-    .modal-content {
+    .modal {
         padding: 15px;
-        border-radius: 16px;
-        margin: 0;
+    }
+
+    .modal-content {
+        padding: 20px;
         max-height: 85vh;
     }
 
