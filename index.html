@@ -9,6 +9,14 @@
     <link rel="icon" type="image/png" href="./src/img/relic_tracker.png">
     <link rel="shortcut icon" type="image/png" href="./src/img/relic_tracker.png">
     
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
     <link rel="stylesheet" href="./styles.css">
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#4a90e2">
@@ -24,39 +32,112 @@
     <link rel="apple-touch-startup-image" href="./src/img/relic_tracker.png">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Relic Tracker</h1>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>Relic Tracker</h1>
+                    <p class="subtitle">Track your progress and manage relics</p>
+                </div>
+                <div class="header-right">
+                    <div class="stats-container">
+                        <div class="stat-item">
+                            <span class="stat-value" id="totalRelics">0</span>
+                            <span class="stat-label">Total Relics</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="completedRelics">0</span>
+                            <span class="stat-label">Completed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </header>
 
-        <main>
-            <div class="menu-buttons">
-                <button id="addChestBtn" class="btn">Add New Chest</button>
-                <button id="viewProgressBtn" class="btn">View Relic Progress</button>
-                <button id="editShardsBtn" class="btn">Edit Relic Shards</button>
-                <button id="manageChestsBtn" class="btn">Manage Saved Chests</button>
-                <button id="manageUnlockedBtn" class="btn">Manage Unlocked Relics</button>
+        <main class="app-main">
+            <div class="dashboard-grid">
+                <div class="dashboard-card primary-actions">
+                    <h2>Quick Actions</h2>
+                    <div class="action-buttons">
+                        <button id="addChestBtn" class="action-btn primary">
+                            <span class="material-icons">add_box</span>
+                            <span class="label">Add New Chest</span>
+                        </button>
+                        <button id="viewProgressBtn" class="action-btn secondary">
+                            <span class="material-icons">analytics</span>
+                            <span class="label">View Progress</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="dashboard-card management">
+                    <h2>Management</h2>
+                    <div class="action-buttons">
+                        <button id="editShardsBtn" class="action-btn">
+                            <span class="material-icons">edit</span>
+                            <span class="label">Edit Relic Shards</span>
+                        </button>
+                        <button id="manageChestsBtn" class="action-btn">
+                            <span class="material-icons">inventory_2</span>
+                            <span class="label">Manage Chests</span>
+                        </button>
+                        <button id="manageUnlockedBtn" class="action-btn">
+                            <span class="material-icons">lock_open</span>
+                            <span class="label">Manage Unlocked</span>
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <div id="progressDisplay" class="hidden">
-                <h2>Relic Progress</h2>
-                <div id="progressList"></div>
-                <button class="btn" onclick="hideProgress()">Close</button>
+            <div id="progressDisplay" class="progress-panel hidden">
+                <div class="panel-header">
+                    <h2>Relic Progress</h2>
+                    <button class="close-btn" onclick="hideProgress()">×</button>
+                </div>
+                <div class="panel-content">
+                    <div class="progress-summary">
+                        <div class="progress-stats">
+                            <div class="stat-item">
+                                <span class="stat-value" id="totalRelicsProgress">0</span>
+                                <span class="stat-label">Total Relics</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="completedRelicsProgress">0</span>
+                                <span class="stat-label">Completed</span>
+                            </div>
+                        </div>
+                        <div class="overall-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="overallProgressFill"></div>
+                            </div>
+                            <span class="progress-text" id="overallProgressText">0% Complete</span>
+                        </div>
+                    </div>
+                    <div id="progressList" class="progress-list"></div>
+                </div>
             </div>
 
             <div id="chestModal" class="modal hidden">
                 <div class="modal-content">
-                    <h2>Select a Chest</h2>
-                    <div id="chestList"></div>
-                    <button class="btn" onclick="closeModal()">Cancel</button>
+                    <div class="modal-header">
+                        <h2>Select a Chest</h2>
+                        <button class="modal-close" onclick="closeModal()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="chestList" class="chest-grid"></div>
+                    </div>
                 </div>
             </div>
 
             <div id="relicModal" class="modal hidden">
                 <div class="modal-content">
-                    <h2>Select a Relic</h2>
-                    <div id="relicList"></div>
-                    <button class="btn" onclick="closeModal()">Cancel</button>
+                    <div class="modal-header">
+                        <h2>Select a Relic</h2>
+                        <button class="modal-close" onclick="closeModal()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="relicList" class="relic-grid"></div>
+                    </div>
                 </div>
             </div>
         </main>

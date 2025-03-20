@@ -101,24 +101,15 @@ function saveData() {
 
 function showModal(modal) {
     if (modal) {
-        modal.style.display = 'block';
         modal.classList.remove('hidden');
+        modal.classList.add('visible');
         document.body.classList.add('modal-open');
-        
-        // Add close button if it doesn't exist
-        if (!modal.querySelector('.modal-close')) {
-            const closeBtn = document.createElement('button');
-            closeBtn.className = 'modal-close';
-            closeBtn.innerHTML = '×';
-            closeBtn.onclick = closeModal;
-            modal.querySelector('.modal-content').appendChild(closeBtn);
-        }
     }
 }
 
 function closeModal() {
     document.querySelectorAll('.modal').forEach(modal => {
-        modal.style.display = 'none';
+        modal.classList.remove('visible');
         modal.classList.add('hidden');
     });
     document.body.classList.remove('modal-open');
@@ -126,12 +117,9 @@ function closeModal() {
 
 // Chest Management
 function showChestSelection() {
-    chestModal.querySelector('.modal-content').innerHTML = `
-        <h2>Select a Chest</h2>
-        <div id="chestList"></div>
-    `;
+    const chestList = document.getElementById('chestList');
+    chestList.innerHTML = ''; // Clear existing content
     
-    const chestList = chestModal.querySelector('#chestList');
     Object.keys(BOXES).forEach(chest => {
         const div = document.createElement('div');
         div.className = 'chest-item';
@@ -140,20 +128,20 @@ function showChestSelection() {
                 <img src="./src/img/${encodeURIComponent(chest)}.png" alt="${chest}" onerror="this.src='./src/img/default-chest.png'" title="${chest}">
             </div>
             <div class="chest-actions">
-                <button class="btn-small add-chest-btn">Add Chest</button>
-                <button class="btn-small add-multiple-btn">Add Multiple</button>
+                <button class="action-btn primary">Add Chest</button>
+                <button class="action-btn secondary">Add Multiple</button>
             </div>
         `;
         
         // Add click handlers
-        const addBtn = div.querySelector('.add-chest-btn');
+        const addBtn = div.querySelector('.action-btn.primary');
         addBtn.onclick = (e) => {
             e.stopPropagation();
             addChest(chest);
             closeModal();
         };
         
-        const addMultipleBtn = div.querySelector('.add-multiple-btn');
+        const addMultipleBtn = div.querySelector('.action-btn.secondary');
         addMultipleBtn.onclick = (e) => {
             e.stopPropagation();
             showMultipleChestInput(chest);
@@ -467,66 +455,66 @@ function addShard(relic) {
 
 // Progress Display
 function showProgress() {
-    if (window.progressDisplay) {
-        window.progressDisplay.classList.remove('hidden');
-        updateProgressDisplay();
-    }
+    const progressList = document.getElementById('progressList');
+    const totalRelicsProgress = document.getElementById('totalRelicsProgress');
+    const completedRelicsProgress = document.getElementById('completedRelicsProgress');
+    const overallProgressFill = document.getElementById('overallProgressFill');
+    const overallProgressText = document.getElementById('overallProgressText');
+    
+    progressList.innerHTML = '';
+    
+    // Count total and completed relics
+    let totalRelics = 0;
+    let completedRelics = 0;
+    
+    // Get all unique relics from chests
+    const allRelics = new Set();
+    relicData.availableChests.forEach(chest => {
+        chest.relics.forEach(relic => allRelics.add(relic));
+    });
+    
+    // Calculate progress for each relic
+    allRelics.forEach(relic => {
+        const currentShards = relicData.shards[relic] || 0;
+        const requiredShards = 10; // Assuming 10 shards are needed for each relic
+        const progress = Math.min((currentShards / requiredShards) * 100, 100);
+        
+        if (progress === 100) {
+            completedRelics++;
+        }
+        totalRelics++;
+        
+        const div = document.createElement('div');
+        div.className = 'progress-item';
+        div.innerHTML = `
+            <div class="progress-item-header">
+                <span class="progress-item-name">${relic}</span>
+                <span class="progress-item-count">${currentShards}/${requiredShards} shards</span>
+            </div>
+            <div class="progress-item-bar">
+                <div class="progress-item-fill" style="width: ${progress}%"></div>
+            </div>
+            <div class="progress-item-status">${Math.round(progress)}% Complete</div>
+        `;
+        progressList.appendChild(div);
+    });
+    
+    // Update statistics
+    totalRelicsProgress.textContent = totalRelics;
+    completedRelicsProgress.textContent = completedRelics;
+    
+    // Update overall progress
+    const overallProgress = totalRelics > 0 ? (completedRelics / totalRelics) * 100 : 0;
+    overallProgressFill.style.width = `${overallProgress}%`;
+    overallProgressText.textContent = `${Math.round(overallProgress)}% Complete`;
+    
+    progressDisplay.classList.remove('hidden');
 }
 
 function hideProgress() {
     if (window.progressDisplay) {
         window.progressDisplay.classList.add('hidden');
     }
-}
-
-function updateProgressDisplay() {
-    if (!window.progressList) return;
-    
-    window.progressList.innerHTML = '';
-    
-    // Calculate total shards for each relic
-    const totalShards = {};
-    
-    // Count existing shards
-    Object.entries(relicData.shards).forEach(([relic, count]) => {
-        totalShards[relic] = count;
-    });
-    
-    // Count potential shards from chests
-    relicData.availableChests.forEach(chest => {
-        chest.relics.forEach(relic => {
-            if (!totalShards[relic]) {
-                totalShards[relic] = 0;
-            }
-            totalShards[relic]++;
-        });
-    });
-    
-    // If no relics have any shards, show a message
-    if (Object.keys(totalShards).length === 0) {
-        window.progressList.innerHTML = '<div class="no-relics">No relics tracked yet. Add some chests or shards to see progress.</div>';
-        return;
-    }
-    
-    // Display progress for each relic
-    Object.entries(totalShards).forEach(([relic, count]) => {
-        const percentage = (count / 50 * 100).toFixed(1);
-        const isUnlocked = relicData.unlockedRelics[relic];
-        const existingShards = relicData.shards[relic] || 0;
-        const chestShards = count - existingShards;
-        
-        const div = document.createElement('div');
-        div.className = 'progress-item';
-        div.innerHTML = `
-            <h3>${relic}${isUnlocked ? ' (Unlocked)' : ''}</h3>
-            <p>${count}/50 shards (${percentage}%)</p>
-            <p class="shard-breakdown">Existing: ${existingShards} | From Chests: ${chestShards}</p>
-            <div class="progress-bar">
-                <div class="progress-fill" style="width: ${percentage}%"></div>
-            </div>
-        `;
-        window.progressList.appendChild(div);
-    });
 }
 
 // Unlocked Relics Management
