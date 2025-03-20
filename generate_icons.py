@@ -46,7 +46,7 @@ def generate_icons(input_path, output_dir):
         print(f"Generated {output_name}")
 
 if __name__ == "__main__":
-    input_path = "./src/img/relic_tracker.png"
+    input_path = "./src/img/relic_trackerv2.png"
     output_dir = "./src/img"
     generate_icons(input_path, output_dir)
     print("Icon generation complete!") 

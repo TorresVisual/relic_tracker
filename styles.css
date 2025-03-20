@@ -1,3 +1,4 @@
+/* Remove light mode theme and keep only original root variables */
 :root {
     --primary-color: #2563eb;
     --primary-light: #3b82f6;
