@@ -204,7 +204,7 @@ body {
     display: none;
     align-items: center;
     justify-content: center;
-    padding: 1.5rem;
+    padding: 1rem;
     z-index: 1000;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -226,6 +226,7 @@ body {
     box-shadow: var(--shadow-lg);
     transform: scale(0.95);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 0 auto;
 }
 
 .modal.visible .modal-content {
@@ -264,6 +265,7 @@ body {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 1rem;
     padding: 1rem;
+    width: 100%;
 }
 
 .chest-item {
@@ -383,6 +385,7 @@ body {
         grid-template-columns: repeat(3, 1fr) !important;
         gap: 0.8rem;
         padding: 0.8rem;
+        width: 100%;
     }
 
     .chest-item {
@@ -418,10 +421,12 @@ body {
 
     /* Modal Improvements */
     .modal {
-        width: 95% !important;
-        max-width: none !important;
-        margin: 1rem;
-        max-height: 90vh;
+        padding: 0.5rem;
+    }
+
+    .modal-content {
+        max-width: 100%;
+        margin: 0;
     }
 
     .modal-header {
@@ -432,12 +437,6 @@ body {
         font-size: 1.2rem;
     }
 
-    .modal-content {
-        padding: 1rem;
-        width: 100%;
-    }
-
-    /* Progress Display */
     .progress-summary {
         padding: 1rem;
     }
@@ -553,8 +552,12 @@ body {
     }
 
     .modal {
-        margin: 0.5rem;
-        width: calc(100% - 1rem);
+        padding: 0.5rem;
+    }
+
+    .modal-content {
+        max-width: 100%;
+        margin: 0;
     }
 
     /* Adjust chest grid for very small screens */
@@ -562,6 +565,7 @@ body {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 0.6rem;
         padding: 0.6rem;
+        width: 100%;
     }
 
     .chest-item h3 {
