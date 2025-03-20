@@ -334,22 +334,242 @@ body {
 }
 
 @media (max-width: 768px) {
+    .app-header {
+        padding: 1rem;
+    }
+
     .header-content {
         flex-direction: column;
-        gap: 1rem;
+        align-items: center;
         text-align: center;
+        gap: 0.5rem;
+    }
+
+    .header-left h1 {
+        font-size: 1.5rem;
+    }
+
+    .app-main {
+        padding: 1rem;
     }
 
     .dashboard-grid {
         grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .card {
+        padding: 1rem;
+    }
+
+    .card-header h2 {
+        font-size: 1.2rem;
+    }
+
+    .card-content {
+        padding: 0.5rem 0;
+    }
+
+    /* Modal Improvements */
+    .modal {
+        width: 95%;
+        max-width: none;
+        margin: 1rem;
+        max-height: 90vh;
+    }
+
+    .modal-header {
+        padding: 1rem;
+    }
+
+    .modal-header h2 {
+        font-size: 1.2rem;
     }
 
     .modal-content {
-        margin: 1rem;
+        padding: 1rem;
     }
 
-    .chest-grid, .relic-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    /* Chest Selection Modal */
+    .chest-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.8rem;
+    }
+
+    .chest-item {
+        padding: 0.8rem;
+    }
+
+    .chest-item h3 {
+        font-size: 0.9rem;
+    }
+
+    .chest-count {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.4rem;
+    }
+
+    .chest-relics {
+        gap: 0.2rem;
+    }
+
+    .relic-tag {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.4rem;
+    }
+
+    /* Progress Display */
+    .progress-summary {
+        padding: 1rem;
+    }
+
+    .progress-stats {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .progress-stat {
+        padding: 0;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 1rem;
+    }
+
+    .progress-stat:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .progress-stat-value {
+        font-size: 1.5rem;
+    }
+
+    .progress-item {
+        padding: 1rem;
+    }
+
+    .progress-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .progress-item-count {
+        font-size: 0.8rem;
+    }
+
+    /* Unlocked Relics Tracker */
+    .unlocked-relics {
+        display: none;
+    }
+
+    /* Button Improvements */
+    .btn {
+        padding: 0.8rem 1.2rem;
+        font-size: 0.9rem;
+    }
+
+    .btn-small {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    /* Chest Actions */
+    .chest-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .chest-actions button {
+        width: 100%;
+    }
+
+    /* Manage View */
+    .manage-view {
+        padding: 0.5rem;
+    }
+
+    .manage-view .chest-item {
+        padding: 1rem;
+    }
+
+    .manage-view .chest-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .manage-view .chest-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .manage-view .btn-small {
+        width: 100%;
+    }
+
+    /* Notification */
+    .notification {
+        width: 90%;
+        left: 5%;
+        right: 5%;
+        bottom: 5rem;
+    }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+    .app-header {
+        padding: 0.8rem;
+    }
+
+    .header-left h1 {
+        font-size: 1.3rem;
+    }
+
+    .subtitle {
+        font-size: 0.8rem;
+    }
+
+    .card-header h2 {
+        font-size: 1.1rem;
+    }
+
+    .modal {
+        margin: 0.5rem;
+        width: calc(100% - 1rem);
+    }
+
+    .chest-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.6rem;
+    }
+
+    .chest-item h3 {
+        font-size: 0.8rem;
+    }
+
+    .chest-count {
+        font-size: 0.7rem;
+    }
+
+    .relic-tag {
+        font-size: 0.7rem;
+        padding: 0.15rem 0.3rem;
+    }
+
+    .progress-item-name {
+        font-size: 1rem;
+    }
+
+    .progress-item-count {
+        font-size: 0.75rem;
+    }
+
+    .unlocked-relic-item {
+        font-size: 0.8rem;
+    }
+
+    .unlocked-relic-item .material-icons {
+        font-size: 1rem;
     }
 }
 
