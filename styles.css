@@ -370,10 +370,54 @@ body {
         padding: 0.5rem 0;
     }
 
+    /* Hide unlocked relics tracker on mobile */
+    .unlocked-relics {
+        display: none !important;
+    }
+
+    /* Chest Grid Improvements */
+    .chest-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 0.8rem;
+        width: 100%;
+    }
+
+    .chest-item {
+        padding: 0.8rem;
+        width: 100%;
+    }
+
+    .chest-item h3 {
+        font-size: 0.9rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .chest-count {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.4rem;
+    }
+
+    .chest-relics {
+        gap: 0.2rem;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .relic-tag {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.4rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     /* Modal Improvements */
     .modal {
-        width: 95%;
-        max-width: none;
+        width: 95% !important;
+        max-width: none !important;
         margin: 1rem;
         max-height: 90vh;
     }
@@ -388,34 +432,7 @@ body {
 
     .modal-content {
         padding: 1rem;
-    }
-
-    /* Chest Selection Modal */
-    .chest-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 0.8rem;
-    }
-
-    .chest-item {
-        padding: 0.8rem;
-    }
-
-    .chest-item h3 {
-        font-size: 0.9rem;
-    }
-
-    .chest-count {
-        font-size: 0.75rem;
-        padding: 0.2rem 0.4rem;
-    }
-
-    .chest-relics {
-        gap: 0.2rem;
-    }
-
-    .relic-tag {
-        font-size: 0.75rem;
-        padding: 0.2rem 0.4rem;
+        width: 100%;
     }
 
     /* Progress Display */
@@ -538,8 +555,9 @@ body {
         width: calc(100% - 1rem);
     }
 
+    /* Adjust chest grid for very small screens */
     .chest-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr) !important;
         gap: 0.6rem;
     }
 
