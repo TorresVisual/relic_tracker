@@ -147,7 +147,7 @@ function showChestSelection() {
         const addMultipleBtn = div.querySelector('.action-btn.secondary');
         addMultipleBtn.onclick = (e) => {
             e.stopPropagation();
-            showMultipleChestInput(chest);
+            showMultipleChestInput(chest, BOXES[chest].length);
         };
         
         chestList.appendChild(div);
@@ -155,22 +155,36 @@ function showChestSelection() {
     showModal(chestModal);
 }
 
-function showMultipleChestInput(chestName) {
+function showMultipleChestInput(chestName, maxCount) {
     const modal = document.createElement('div');
     modal.className = 'modal';
     modal.innerHTML = `
         <div class="modal-content">
-            <h2>Add Multiple Chests</h2>
-            <div class="chest-icon" style="margin: 0 auto 20px;">
-                <img src="./src/img/${encodeURIComponent(chestName)}.png" alt="${chestName}" onerror="this.src='./src/img/default-chest.png'" title="${chestName}">
+            <div class="modal-header">
+                <h2>Add Multiple ${chestName}</h2>
+                <button class="modal-close" onclick="this.closest('.modal').remove()">×</button>
             </div>
-            <div class="input-group">
-                <label for="chestCount">Number of ${chestName} to add:</label>
-                <input type="number" id="chestCount" min="1" value="1" class="number-input">
-            </div>
-            <div class="modal-actions">
-                <button class="btn-small confirm-btn">Add Chests</button>
-                <button class="btn-small cancel-btn">Cancel</button>
+            <div class="modal-body">
+                <div class="chest-preview">
+                    <div class="chest-icon">
+                        <img src="./src/img/${chestName.toLowerCase().replace(/\s+/g, '_')}.png" alt="${chestName}" onerror="this.src='./src/img/default-chest.png'">
+                    </div>
+                    <div class="chest-info">
+                        <h3>${chestName}</h3>
+                        <p>Maximum available: ${maxCount}</p>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="addCount">Number of chests to add:</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="addCount" min="1" max="${maxCount}" value="1" class="number-input">
+                        <span class="input-hint">Max: ${maxCount}</span>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-small cancel-btn">Cancel</button>
+                    <button class="btn-small confirm-btn">Add Chests</button>
+                </div>
             </div>
         </div>
     `;
@@ -178,18 +192,15 @@ function showMultipleChestInput(chestName) {
     document.body.appendChild(modal);
     showModal(modal);
     
-    // Add event listeners
     const confirmBtn = modal.querySelector('.confirm-btn');
     const cancelBtn = modal.querySelector('.cancel-btn');
-    const input = modal.querySelector('#chestCount');
+    const input = modal.querySelector('#addCount');
     
     confirmBtn.onclick = () => {
         const count = parseInt(input.value);
-        if (!isNaN(count) && count > 0) {
-            for (let i = 0; i < count; i++) {
-                addChest(chestName);
-            }
-            showNotification(`Added ${count} ${chestName}`);
+        if (!isNaN(count) && count > 0 && count <= maxCount) {
+            addChest(chestName, count);
+            showNotification(`Added ${count} ${chestName}${count > 1 ? 's' : ''}`);
         }
         modal.remove();
         closeModal();
@@ -197,17 +208,18 @@ function showMultipleChestInput(chestName) {
     
     cancelBtn.onclick = () => {
         modal.remove();
+        closeModal();
     };
     
-    // Close on outside click
     modal.onclick = (e) => {
         if (e.target === modal) {
             modal.remove();
+            closeModal();
         }
     };
 }
 
-function addChest(chestName) {
+function addChest(chestName, count = 1) {
     console.log('Adding chest:', chestName); // Debug log
     const chest = {
         name: chestName,
@@ -366,14 +378,19 @@ function showOpenMultipleInput(chestName, maxCount) {
     modal.className = 'modal';
     modal.innerHTML = `
         <div class="modal-content">
-            <h2>Open Multiple ${chestName}</h2>
-            <div class="input-group">
-                <label for="openCount">Number of chests to open (max ${maxCount}):</label>
-                <input type="number" id="openCount" min="1" max="${maxCount}" value="1" class="number-input">
+            <div class="modal-header">
+                <h2>Open Multiple ${chestName}</h2>
+                <button class="modal-close" onclick="this.closest('.modal').remove()">×</button>
             </div>
-            <div class="modal-actions">
-                <button class="btn-small confirm-btn">Open</button>
-                <button class="btn-small cancel-btn">Cancel</button>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="openCount">Number of chests to open (max ${maxCount}):</label>
+                    <input type="number" id="openCount" min="1" max="${maxCount}" value="1" class="number-input">
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-small confirm-btn">Open</button>
+                    <button class="btn-small cancel-btn">Cancel</button>
+                </div>
             </div>
         </div>
     `;
@@ -391,15 +408,18 @@ function showOpenMultipleInput(chestName, maxCount) {
             openChest(chestName, count);
         }
         modal.remove();
+        closeModal();
     };
     
     cancelBtn.onclick = () => {
         modal.remove();
+        closeModal();
     };
     
     modal.onclick = (e) => {
         if (e.target === modal) {
             modal.remove();
+            closeModal();
         }
     };
 }
@@ -487,7 +507,7 @@ function showProgress() {
     allRelics.forEach(relic => {
         const isUnlocked = relicData.unlockedRelics[relic] || false;
         const currentShards = relicData.shards[relic] || 0;
-        const requiredShards = 50; // Changed to 50 shards required for each relic
+        const requiredShards = 50;
         
         // Count potential shards from chests
         let potentialShards = 0;
@@ -535,12 +555,17 @@ function showProgress() {
     overallProgressFill.style.width = `${overallProgress}%`;
     overallProgressText.textContent = `${Math.round(overallProgress)}% Complete`;
     
-    progressDisplay.classList.remove('hidden');
+    // Show the progress panel
+    if (window.progressDisplay) {
+        window.progressDisplay.classList.remove('hidden');
+        window.progressDisplay.classList.add('visible');
+    }
 }
 
 function hideProgress() {
     if (window.progressDisplay) {
         window.progressDisplay.classList.add('hidden');
+        window.progressDisplay.classList.remove('visible');
     }
 }
 
@@ -600,27 +625,66 @@ function showEditShards() {
         const div = document.createElement('div');
         div.className = 'relic-item';
         div.textContent = `${relic}: ${count}`;
-        div.addEventListener('click', () => editShardCount(relic));
+        div.addEventListener('click', () => showEditShardsModal(relic));
         relicList.appendChild(div);
     });
     showModal(relicModal);
 }
 
-function editShardCount(relic) {
-    const newCount = prompt(`Enter new shard count for ${relic}:`, relicData.shards[relic]);
-    if (newCount !== null) {
-        const count = parseInt(newCount);
-        if (!isNaN(count)) {
-            if (count <= 0) {
-                delete relicData.shards[relic];
-            } else {
-                relicData.shards[relic] = count;
-            }
-            saveData();
-            showProgress();
+function showEditShardsModal(relicName) {
+    const relic = unlockedRelics.find(r => r.name === relicName);
+    if (!relic) return;
+
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Shards for ${relicName}</h2>
+                <button class="modal-close" onclick="this.closest('.modal').remove()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="shardCount">Number of shards:</label>
+                    <input type="number" id="shardCount" min="0" max="100" value="${relic.shards}" class="number-input">
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-small confirm-btn">Save</button>
+                    <button class="btn-small cancel-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    showModal(modal);
+    
+    const confirmBtn = modal.querySelector('.confirm-btn');
+    const cancelBtn = modal.querySelector('.cancel-btn');
+    const input = modal.querySelector('#shardCount');
+    
+    confirmBtn.onclick = () => {
+        const count = parseInt(input.value);
+        if (!isNaN(count) && count >= 0 && count <= 100) {
+            relic.shards = count;
+            saveUnlockedRelics();
+            updateUnlockedRelicsList();
         }
-    }
-    closeModal();
+        modal.remove();
+        closeModal();
+    };
+    
+    cancelBtn.onclick = () => {
+        modal.remove();
+        closeModal();
+    };
+    
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            modal.remove();
+            closeModal();
+        }
+    };
 }
 
 // Unlock Checking
@@ -674,4 +738,73 @@ function updateUnlockedRelicsTracker() {
         `;
         unlockedList.appendChild(div);
     });
+}
+
+function showManageUnlockedRelicsModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Manage Unlocked Relics</h2>
+                <button class="modal-close" onclick="this.closest('.modal').remove()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="relic-list">
+                    ${unlockedRelics.map(relic => `
+                        <div class="relic-item">
+                            <span>${relic.name}</span>
+                            <div class="relic-actions">
+                                <button class="btn-small edit-btn" data-relic="${relic.name}">Edit</button>
+                                <button class="btn-small delete-btn" data-relic="${relic.name}">Delete</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-small add-btn">Add New Relic</button>
+                    <button class="btn-small cancel-btn">Close</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    showModal(modal);
+    
+    // Add event listeners
+    modal.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.onclick = () => {
+            const relicName = btn.dataset.relic;
+            showEditShardsModal(relicName);
+        };
+    });
+    
+    modal.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.onclick = () => {
+            const relicName = btn.dataset.relic;
+            if (confirm(`Are you sure you want to delete ${relicName}?`)) {
+                unlockedRelics = unlockedRelics.filter(r => r.name !== relicName);
+                saveUnlockedRelics();
+                updateUnlockedRelicsList();
+                showManageUnlockedRelicsModal(); // Refresh the modal
+            }
+        };
+    });
+    
+    modal.querySelector('.add-btn').onclick = () => {
+        showAddRelicModal();
+    };
+    
+    modal.querySelector('.cancel-btn').onclick = () => {
+        modal.remove();
+        closeModal();
+    };
+    
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            modal.remove();
+            closeModal();
+        }
+    };
 } 
