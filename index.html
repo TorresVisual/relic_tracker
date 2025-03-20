@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relic Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4a90e2">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Relic Tracker</h1>
+        </header>
+
+        <main>
+            <div class="menu-buttons">
+                <button id="addChestBtn" class="btn">Add New Chest</button>
+                <button id="viewProgressBtn" class="btn">View Relic Progress</button>
+                <button id="editShardsBtn" class="btn">Edit Relic Shards</button>
+                <button id="manageChestsBtn" class="btn">Manage Saved Chests</button>
+                <button id="manageUnlockedBtn" class="btn">Manage Unlocked Relics</button>
+            </div>
+
+            <div id="progressDisplay" class="hidden">
+                <h2>Relic Progress</h2>
+                <div id="progressList"></div>
+                <button class="btn" onclick="hideProgress()">Close</button>
+            </div>
+
+            <div id="chestModal" class="modal hidden">
+                <div class="modal-content">
+                    <h2>Select a Chest</h2>
+                    <div id="chestList"></div>
+                    <button class="btn" onclick="closeModal()">Cancel</button>
+                </div>
+            </div>
+
+            <div id="relicModal" class="modal hidden">
+                <div class="modal-content">
+                    <h2>Select a Relic</h2>
+                    <div id="relicList"></div>
+                    <button class="btn" onclick="closeModal()">Cancel</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html> 
