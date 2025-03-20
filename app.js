@@ -72,11 +72,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Close modal when clicking outside
-    window.onclick = function(event) {
-        if (event.target.classList.contains('modal')) {
-            closeModal();
-        }
-    };
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    });
 
     // Add event listeners
     window.addChestBtn.addEventListener('click', showChestSelection);
@@ -101,18 +103,25 @@ function showModal(modal) {
     if (modal) {
         modal.style.display = 'block';
         modal.classList.remove('hidden');
+        document.body.classList.add('modal-open');
+        
+        // Add close button if it doesn't exist
+        if (!modal.querySelector('.modal-close')) {
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'modal-close';
+            closeBtn.innerHTML = '×';
+            closeBtn.onclick = closeModal;
+            modal.querySelector('.modal-content').appendChild(closeBtn);
+        }
     }
 }
 
 function closeModal() {
-    if (chestModal) {
-        chestModal.style.display = 'none';
-        chestModal.classList.add('hidden');
-    }
-    if (relicModal) {
-        relicModal.style.display = 'none';
-        relicModal.classList.add('hidden');
-    }
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.style.display = 'none';
+        modal.classList.add('hidden');
+    });
+    document.body.classList.remove('modal-open');
 }
 
 // Chest Management
@@ -122,9 +131,7 @@ function showChestSelection() {
         <div id="chestList"></div>
     `;
     
-    const chestListElement = chestModal.querySelector('#chestList');
-    chestListElement.className = ''; // Reset to default grid view
-    
+    const chestList = chestModal.querySelector('#chestList');
     Object.keys(BOXES).forEach(chest => {
         const div = document.createElement('div');
         div.className = 'chest-item';
@@ -140,17 +147,19 @@ function showChestSelection() {
         
         // Add click handlers
         const addBtn = div.querySelector('.add-chest-btn');
-        addBtn.onclick = () => {
+        addBtn.onclick = (e) => {
+            e.stopPropagation();
             addChest(chest);
             closeModal();
         };
         
         const addMultipleBtn = div.querySelector('.add-multiple-btn');
-        addMultipleBtn.onclick = () => {
+        addMultipleBtn.onclick = (e) => {
+            e.stopPropagation();
             showMultipleChestInput(chest);
         };
         
-        chestListElement.appendChild(div);
+        chestList.appendChild(div);
     });
     showModal(chestModal);
 }
