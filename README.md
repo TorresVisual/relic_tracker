@@ -2,7 +2,7 @@
 
 A Progressive Web App (PWA) designed to help players track their relic shards and chests. Keep track of your collection, manage your chests, and monitor your progress towards completing relics.
 
-<img src="./src/img/relic_tracker.png" alt="Relic Tracker Logo" width="128" style="display: block; margin: 20px auto;">
+<img src="./src/img/relic_tracker.png" alt="Relic Tracker" width="128" style="display: block; margin: 20px auto;">
 
 ## Features
 
