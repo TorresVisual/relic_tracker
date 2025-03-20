@@ -117,12 +117,21 @@ function closeModal() {
 
 // Chest Management
 function showChestSelection() {
-    chestList.innerHTML = '';
+    chestModal.querySelector('.modal-content').innerHTML = `
+        <h2>Select a Chest</h2>
+        <div id="chestList"></div>
+    `;
+    
+    const chestListElement = chestModal.querySelector('#chestList');
+    chestListElement.className = ''; // Reset to default grid view
+    
     Object.keys(BOXES).forEach(chest => {
         const div = document.createElement('div');
         div.className = 'chest-item';
         div.innerHTML = `
-            <div class="chest-name">${chest}</div>
+            <div class="chest-icon">
+                <img src="./src/img/${encodeURIComponent(chest)}.png" alt="${chest}" onerror="this.src='./src/img/default-chest.png'" title="${chest}">
+            </div>
             <div class="chest-actions">
                 <button class="btn-small add-chest-btn">Add Chest</button>
                 <button class="btn-small add-multiple-btn">Add Multiple</button>
@@ -141,7 +150,7 @@ function showChestSelection() {
             showMultipleChestInput(chest);
         };
         
-        chestList.appendChild(div);
+        chestListElement.appendChild(div);
     });
     showModal(chestModal);
 }
@@ -151,13 +160,16 @@ function showMultipleChestInput(chestName) {
     modal.className = 'modal';
     modal.innerHTML = `
         <div class="modal-content">
-            <h2>Add Multiple ${chestName}</h2>
+            <h2>Add Multiple Chests</h2>
+            <div class="chest-icon" style="margin: 0 auto 20px;">
+                <img src="./src/img/${encodeURIComponent(chestName)}.png" alt="${chestName}" onerror="this.src='./src/img/default-chest.png'" title="${chestName}">
+            </div>
             <div class="input-group">
-                <label for="chestCount">Number of chests:</label>
+                <label for="chestCount">Number of ${chestName} to add:</label>
                 <input type="number" id="chestCount" min="1" value="1" class="number-input">
             </div>
             <div class="modal-actions">
-                <button class="btn-small confirm-btn">Add</button>
+                <button class="btn-small confirm-btn">Add Chests</button>
                 <button class="btn-small cancel-btn">Cancel</button>
             </div>
         </div>
@@ -180,6 +192,7 @@ function showMultipleChestInput(chestName) {
             showNotification(`Added ${count} ${chestName}`);
         }
         modal.remove();
+        closeModal();
     };
     
     cancelBtn.onclick = () => {
@@ -269,7 +282,9 @@ function showNotification(message) {
 }
 
 function showManageChests() {
+    const chestList = document.getElementById('chestList');
     chestList.innerHTML = '';
+    chestList.className = 'manage-view';
     
     if (relicData.availableChests.length === 0) {
         chestList.innerHTML = '<div class="no-chests">No chests available</div>';
@@ -310,7 +325,7 @@ function showManageChests() {
                 <input type="text" placeholder="Add notes..." value="${Array.from(group.notes).join(', ')}" class="notes-input">
             </div>
             <div class="chest-actions">
-                <button class="btn-small open-chest-btn">Open 1</button>
+                <button class="btn-small open-chest-btn">Open</button>
                 <button class="btn-small open-multiple-btn">Open Multiple</button>
                 <button class="btn-small delete delete-chest-btn">Delete All</button>
             </div>
