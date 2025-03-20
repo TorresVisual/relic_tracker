@@ -4,6 +4,7 @@
     --background-color: #f5f6fa;
     --text-color: #2c3e50;
     --border-color: #dcdde1;
+    --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 * {
@@ -17,44 +18,61 @@ body {
     background-color: var(--background-color);
     color: var(--text-color);
     line-height: 1.6;
+    -webkit-tap-highlight-color: transparent;
+    padding-bottom: var(--safe-area-inset-bottom);
 }
 
 .container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 15px;
 }
 
 header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 h1 {
     color: var(--primary-color);
-    font-size: 2.5rem;
+    font-size: 2rem;
+    margin: 0;
 }
 
 .menu-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 12px;
+    padding: 10px;
 }
 
 .btn {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
+    background-color: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    padding: 15px 20px;
+    border-radius: 12px;
     font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 60px;
 }
 
-.btn:hover {
-    background-color: #357abd;
+.btn:active {
+    transform: scale(0.98);
+    background-color: var(--primary-color);
+    color: white;
 }
 
 .hidden {
@@ -129,18 +147,24 @@ h1 {
 .progress-item {
     background-color: white;
     padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 15px;
+    border-radius: 12px;
+    margin-bottom: 12px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.progress-item h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.1rem;
+    color: var(--secondary-color);
 }
 
 .progress-bar {
     width: 100%;
-    height: 20px;
+    height: 16px;
     background-color: var(--border-color);
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
-    margin-top: 10px;
+    margin-top: 8px;
 }
 
 .progress-fill {
@@ -200,12 +224,13 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 15px;
     background-color: white;
     border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s, box-shadow 0.2s;
-    width: 180px;
+    width: 100%;
+    max-width: 180px;
     cursor: pointer;
 }
 
@@ -215,9 +240,9 @@ h1 {
 }
 
 .chest-icon {
-    width: 140px;
-    height: 140px;
-    margin-bottom: 15px;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 12px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -225,7 +250,7 @@ h1 {
     background-color: var(--background-color);
     border-radius: 12px;
     overflow: hidden;
-    padding: 10px;
+    padding: 8px;
 }
 
 .chest-icon img {
@@ -289,21 +314,22 @@ h1 {
     flex-direction: column;
     gap: 8px;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 8px;
 }
 
 .btn-small {
     background-color: var(--primary-color);
     color: white;
     border: none;
-    padding: 10px 15px;
+    padding: 12px;
     border-radius: 8px;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.1s;
     width: 100%;
     text-align: center;
     font-weight: 500;
+    min-height: 44px;
 }
 
 .btn-small:hover {
@@ -324,38 +350,94 @@ h1 {
 }
 
 @media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .menu-buttons {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 5px;
+    }
+
+    .btn {
+        padding: 16px;
+        font-size: 1.1rem;
+        width: 100%;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
     .modal-content {
-        padding: 20px;
-        width: 95%;
-        margin: 20px;
+        padding: 15px;
+        border-radius: 16px;
+        margin: 0;
         max-height: 85vh;
     }
 
     #chestList {
         grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 15px;
-        padding: 15px 0;
+        gap: 10px;
+        padding: 10px 0;
     }
 
     .chest-item {
-        width: 140px;
+        padding: 12px;
+        max-width: 150px;
     }
 
     .chest-icon {
-        width: 110px;
-        height: 110px;
+        width: 80px;
+        height: 80px;
+        margin-bottom: 10px;
     }
 
     .modal-close {
-        top: 5px;
-        right: 5px;
+        top: 8px;
+        right: 8px;
         width: 44px;
         height: 44px;
+        font-size: 28px;
+    }
+
+    .modal h2 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
     }
 
     .btn-small {
-        padding: 12px 15px;
+        padding: 12px;
+        font-size: 0.95rem;
+        min-height: 44px;
+    }
+
+    .progress-item {
+        padding: 12px;
+        margin-bottom: 10px;
+    }
+
+    .progress-item h3 {
         font-size: 1rem;
+    }
+
+    .progress-bar {
+        height: 12px;
+        margin-top: 6px;
+    }
+
+    .relic-item {
+        padding: 14px;
+        font-size: 0.95rem;
+    }
+
+    .shard-breakdown {
+        font-size: 0.85rem;
+    }
+
+    #progressList {
+        padding: 5px;
     }
 }
 
@@ -368,35 +450,39 @@ body.modal-open {
 
 .notification {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #4a90e2;
+    bottom: calc(20px + var(--safe-area-inset-bottom));
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary-color);
     color: white;
-    padding: 15px 25px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    padding: 14px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 1000;
-    animation: slideIn 0.3s ease-out;
+    animation: slideUp 0.3s ease-out;
+    max-width: 90%;
+    text-align: center;
+    font-weight: 500;
 }
 
-@keyframes slideIn {
+@keyframes slideUp {
     from {
-        transform: translateX(100%);
+        transform: translate(-50%, 100%);
         opacity: 0;
     }
     to {
-        transform: translateX(0);
+        transform: translate(-50%, 0);
         opacity: 1;
     }
 }
 
 .input-group {
-    margin: 20px 0 30px;
+    margin: 15px 0 20px;
 }
 
 .input-group label {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     color: var(--text-color);
     font-size: 1rem;
     font-weight: 500;
@@ -404,12 +490,14 @@ body.modal-open {
 
 .number-input {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     border: 2px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 1rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
     transition: border-color 0.2s;
     outline: none;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .number-input:focus {
@@ -418,14 +506,15 @@ body.modal-open {
 
 .modal-actions {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     justify-content: flex-end;
     margin-top: 20px;
 }
 
 .modal-actions .btn-small {
-    width: auto;
-    min-width: 120px;
+    min-width: 100px;
+    min-height: 44px;
+    font-size: 1rem;
 }
 
 .modal-actions .cancel-btn {
@@ -449,7 +538,7 @@ body.modal-open {
 .shard-breakdown {
     font-size: 0.9rem;
     color: #666;
-    margin-top: 5px;
+    margin: 5px 0;
 }
 
 .no-relics {
@@ -462,8 +551,8 @@ body.modal-open {
 #chestList {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 20px;
-    padding: 20px 0;
+    gap: 15px;
+    padding: 15px 0;
     justify-items: center;
 }
 
@@ -559,4 +648,49 @@ body.modal-open {
 
 #chestModal.hidden {
     display: none !important;
+}
+
+.relic-item {
+    background-color: white;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 54px;
+}
+
+.relic-item:active {
+    background-color: #f0f0f0;
+}
+
+@media (max-width: 768px) {
+    .input-group {
+        margin: 12px 0 16px;
+    }
+
+    .number-input {
+        padding: 12px;
+        font-size: 1rem;
+    }
+
+    .modal-actions {
+        gap: 8px;
+        margin-top: 16px;
+    }
+
+    .modal-actions .btn-small {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .notification {
+        padding: 12px 16px;
+        font-size: 0.95rem;
+        max-width: 95%;
+    }
 } 
